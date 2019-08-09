@@ -1,0 +1,113 @@
+\documentclass{article}
+
+\usepackage{amsfonts,amsthm, amssymb, amsmath}
+\usepackage{centernot}
+\usepackage{authblk}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{bm}
+
+\citestyle{nature}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{defn}{Definition}
+\newtheorem{block}{proposition}
+\newcommand{\ord}{\text{ord}}
+
+\usepackage[margin=0.75in]{geometry}
+
+
+\begin{document}
+\hfill \textbf{Cody Allen}
+
+\hfill \textbf{\today}
+
+\vspace{0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+{\huge \textbf{Minimizing Power Plant Cost - Simple Example}}
+\end{center}
+
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics[width=7in]{hw1.png}
+%\end{figure}
+
+%\noindent
+%\textcolor{red}{\large Final Grading: +11 points}
+%\vspace{0.5cm}
+
+\noindent
+This example is \emph{Example 4.5} from \cite{EPS}.
+
+PROBLEM:  Four generators are available to supply a power system peack load of 472.5 MW.  The cost of power, $C(P_i)$ from each generator, and maximum output, is given in (\$ U.S.) by:
+\begin{align*}
+C(P_1) &= 200 + 15P_1 + 0.20P_1^2 & & \text{Max. output 100 MW} \\
+C(P_2) &= 300 + 17P_2 + 0.10P_2^2 & & \text{Max. output 120 MW} \\
+C(P_3) &= 150 + 12P_3 + 0.15P_3^2 & & \text{Max. output 160 MW} \\
+C(P_4) &= 500 + 2P_4 + 0.07P_4^2 & & \text{Max. output 200 MW} \\
+\end{align*}
+The spinning reserve is to be 10\% of the peak load and the transmission losses can be neglected.  Calculate the optimal loading of each generator.
+
+\bigskip
+\noindent
+SOLUTION: The solution given in the book is given by graphical methods using marginal costs (derivatives of the above functions).  When a total of 347 MW is used, the optimal distribution is given as (in MW),
+\begin{align*}
+P_1^* &= 23 \\
+P_2^* &= 64 \\
+P_3^* &= 60 \\
+P_4^* &= 200 \\
+\end{align*}
+In looking at the graphic used (Figure 4.16) to determine the solution provided, one concludes that the accuracy is within an order of magnitude.
+
+The true solution can be found by using \emph{Quadratic Programming}.  Below we shall setup the problem, verify the requirements for optimal solution and then solve the problem.  The corresponding Matlab file provides this solution using the Sedumi and Yalmip solution.
+
+
+Define,
+
+\begin{align*}
+A &= 
+\begin{bmatrix}
+	0.20 & 0 & 0 & 0  \\ 
+	0 & 0.10 & 0 & 0  \\ 
+	0 & 0 & 0.15 & 0  \\ 
+	0 & 0 & 0 & 0.07  \\ 
+\end{bmatrix}
+& & &
+b &= \begin{pmatrix}
+15 \\ 17 \\ 12 \\ 2
+\end{pmatrix}
+& & &
+c &= \begin{pmatrix}
+1 \\ 1 \\ 1 \\ 1
+\end{pmatrix}
+& & &
+m &= \begin{pmatrix}
+100 \\ 120 \\ 160 \\ 200
+\end{pmatrix}
+& & &
+d &= 200 +300+150+500 = 1150
+\end{align*}
+
+Then, the minimization problem can be stated as follows:
+
+\begin{equation}\label{QP}
+\begin{aligned}
+& \underset{p}{\text{minimize}}
+& & x^TAx + b^Tp + c \\
+& \text{subject to}
+& &  x \le m\\
+&&& c^Tx = 347
+\end{aligned}
+\end{equation}
+
+Now, we would like to ensure $x\ge 0$ as well, since we will not be producing negative power.  The inclusion of this constraint changes the problem.  However, if the solution returned by \eqref{QP} is all positive, there is nothing to worry about.
+
+Note on inclusion of bound constraint:
+\textcolor{red}{finish this part}
+
+
+\end{document}
