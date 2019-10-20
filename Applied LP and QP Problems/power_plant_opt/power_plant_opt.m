@@ -37,7 +37,7 @@ x = sdpvar(4, 1);
 
 % define constraints (spinning reserve must be checked at end for truth
 % value)
-Constraints = [I*x<=max_pow, d'*x == total_load, x>= 0];
+Constraints = [I*x<=max_pow, d'*x == total_load];
 Objective = (x'*(A'*A)*x + b'*x + cons); % this is squared 2 norm
 
 % solve optimization
@@ -53,3 +53,6 @@ disp(sprintf('Final Solution:\npow1 = %f\npow2 = %f\npow3 = %f\npow4 = %f',xx))
 disp(sprintf('spinning reserve: %iMW',round(sum(max_pow - xx))))
 
 % repeat
+
+
+

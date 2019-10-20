@@ -97,17 +97,24 @@ Then, the minimization problem can be stated as follows:
 \begin{equation}\label{QP}
 \begin{aligned}
 & \underset{p}{\text{minimize}}
-& & x^TAx + b^Tp + c \\
+& & p^TAp + b^Tp + c \\
 & \text{subject to}
-& &  x \le m\\
-&&& c^Tx = 347
+& &  p \le m\\
+&&& c^Tp = 347
 \end{aligned}
 \end{equation}
 
-Now, we would like to ensure $x\ge 0$ as well, since we will not be producing negative power.  The inclusion of this constraint changes the problem.  However, if the solution returned by \eqref{QP} is all positive, there is nothing to worry about.
+Now, we would like to ensure $p\ge 0$ as well, since we will not be producing negative power.  The inclusion of this constraint changes the problem.  However, if the solution returned by \eqref{QP} is all positive, there is nothing to worry about.
 
 Note on inclusion of bound constraint:
-\textcolor{red}{finish this part}
+%
+%In certain QP problems, the lower bound of the solution may be inactive, meaning that $x^* > lb$, so that the optimal solution does not have any equalities on the lower bound constraint.  In which case, it need not be present in the constraints of the QP.  One way to check this is to calculate the minimum of the unconstrained QP, which is
+%\begin{align*}
+%x_{uc}^* = -\frac{1}{2}A^{-1}b
+%\end{align*}
+%where one can use the psuedo-inverse in place of the inverse if $A$ is singular.  If $ x_{uc}^* > lb$, then the solution to \eqref{QP} will not be affected by the lower bound constraint.
+%
+%In our case, 
 
 \bibliographystyle{plain}
 \bibliography{sample_bib}
